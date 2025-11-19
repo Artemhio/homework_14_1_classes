@@ -11,7 +11,10 @@ def test_category_init_and_counters() -> None:
     product2 = Product("P2", "desc2", 200.0, 2)
     product3 = Product("P3", "desc3", 300.0, 3)
 
-    category = Category("Смартфоны", "Описание", [product1, product2, product3])
+    category = Category(
+        "Смартфоны", "Описание",
+        [product1, product2, product3]
+    )
 
     assert category.name == "Смартфоны"
     assert category.description == "Описание"
