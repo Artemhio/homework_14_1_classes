@@ -17,7 +17,6 @@ class Category:
     category_count: int = 0
     product_count: int = 0
 
-
     def __init__(
         self,
         name: str,
@@ -36,7 +35,6 @@ class Category:
         for product in products:
             self.add_product(product)
 
-
     def add_product(self, product: Product) -> None:
         """
         Добавляет продукт в приватный список товаров категории.
@@ -44,22 +42,20 @@ class Category:
         self.__products.append(product)
         Category.product_count += 1
 
-
     @property
     def products(self) -> str:
         """
         Возвращает список товаров в виде строк:
 
-        'Название продукта, 80 руб. Остаток: 15 шт.'
-        Каждая запись с новой строки.
+        "Название продукта, X руб. Остаток: Y шт.\n"
         """
         lines: list[str] = []
 
         for product in self.__products:
             line = (
                 f"{product.name}, {product.price} руб. "
-                f"Остаток: {product.quantity} шт."
+                f"Остаток: {product.quantity} шт.\n"
             )
             lines.append(line)
 
-        return "\n".join(lines)
+        return "".join(lines)
