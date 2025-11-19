@@ -5,9 +5,14 @@ description = ""
 authors = ["Artem <artemiy9999@gmail.com>"]
 readme = "README.md"
 
+packages = [{include = "homework", from = "src"}]
+
 [tool.poetry.dependencies]
 python = "^3.12"
 
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^9.0.1"
 
 [build-system]
 requires = ["poetry-core"]
