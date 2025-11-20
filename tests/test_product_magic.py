@@ -10,4 +10,3 @@ def test_product_add():
     p1 = Product("A", "d", 100.0, 10)
     p2 = Product("B", "d", 200.0, 2)
     assert p1 + p2 == 1000 + 400
-    
