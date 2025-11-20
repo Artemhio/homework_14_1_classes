@@ -5,7 +5,6 @@ class Product:
     """Класс товара."""
 
     __price: float
-    # приватный атрибут класса — для выполнения требований SkyPro
 
     def __init__(
         self,
@@ -19,28 +18,32 @@ class Product:
         self.__price = price
         self.quantity = quantity
 
-    # ---------------- STR ----------------
-    def __str__(self):
+    def __str__(self) -> str:
         return (
-            f"{self.name}, {self.price} руб. "
+            f"{self.name}, {self.__price} руб. "
             f"Остаток: {self.quantity} шт."
         )
 
-    # ---------------- PRICE GETTER/SETTER ----------------
     @property
     def price(self) -> float:
+        """Геттер для цены."""
         return self.__price
 
     @price.setter
     def price(self, value: float) -> None:
+        """
+        Сеттер для цены.
+
+        Не даёт установить цену <= 0.
+        """
         if value <= 0:
             print("Цена не должна быть нулевая или отрицательная")
             return
         self.__price = value
 
-    # ---------------- CLASSMETHOD ----------------
     @classmethod
-    def new_product(cls, data: dict) -> "Product":
+    def new_product(cls, data: dict) -> Product:
+        """Создаёт продукт из словаря."""
         return cls(
             name=data["name"],
             description=data["description"],
@@ -48,12 +51,18 @@ class Product:
             quantity=data["quantity"],
         )
 
-    # ---------------- ADD ----------------
-    def __add__(self, other: "Product") -> float:
+    def __add__(self, other: Product) -> float:
         """
-        Складывает итоговую стоимость товаров на складе:
-        price * quantity + other.price * other.quantity
+        Складывает итоговую стоимость товаров на складе.
+
+        Разрешено складывать только экземпляры одного и того же класса.
+        При попытке сложить разные типы выбрасывается TypeError.
         """
         if not isinstance(other, Product):
-            return NotImplemented
+            raise TypeError("Можно складывать только объекты класса Product")
+
+        if type(self) is not type(other):
+            # по условию задачи нужно использовать type()
+            raise TypeError("Нельзя складывать продукты разных типов")
+
         return self.price * self.quantity + other.price * other.quantity
