@@ -1,7 +1,69 @@
 from __future__ import annotations
 
+from abc import ABC, abstractmethod
 
-class Product:
+
+class BaseProduct(ABC):
+    """
+    Базовый абстрактный класс для всех продуктов.
+
+    Общая функциональность:
+    - name
+    - description
+    - quantity
+    - цена (через абстрактное свойство price)
+    """
+
+    def __init__(
+        self,
+        name: str,
+        description: str,
+        price: float,
+        quantity: int,
+    ) -> None:
+        self.name = name
+        self.description = description
+        self.quantity = quantity
+
+    @property
+    @abstractmethod
+    def price(self) -> float:
+        """Цена продукта."""
+        raise NotImplementedError
+
+    @price.setter
+    @abstractmethod
+    def price(self, value: float) -> None:
+        raise NotImplementedError
+
+    @abstractmethod
+    def __str__(self) -> str:
+        """Строковое представление продукта."""
+        raise NotImplementedError
+
+    def __repr__(self) -> str:
+        """
+        Возвращает строку вида:
+        Product('Продукт1', 'Описание', 1200.0, 10)
+        """
+        return (
+            f"{self.__class__.__name__}("
+            f"{self.name!r}, {self.description!r}, "
+            f"{self.price!r}, {self.quantity!r}"
+            ")"
+        )
+
+
+class CreationLoggerMixin:
+    """Миксин, печатающий информацию при создании объекта."""
+
+    def __init__(self, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
+        # После инициализации всех полей выводим repr объекта
+        print(repr(self))
+
+
+class Product(CreationLoggerMixin, BaseProduct):
     """Класс товара."""
 
     __price: float
@@ -13,10 +75,8 @@ class Product:
         price: float,
         quantity: int,
     ) -> None:
-        self.name = name
-        self.description = description
         self.__price = price
-        self.quantity = quantity
+        super().__init__(name, description, price, quantity)
 
     def __str__(self) -> str:
         return (
