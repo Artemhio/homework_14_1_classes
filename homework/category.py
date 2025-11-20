@@ -1,4 +1,7 @@
 from __future__ import annotations
+
+from typing import List
+
 from homework.product import Product
 
 
@@ -12,25 +15,47 @@ class Category:
         self,
         name: str,
         description: str,
-        products: list[Product],
+        products: List[Product],
     ) -> None:
         self.name = name
         self.description = description
-        self.__products = products[:]       # приватный список
-        Category.category_count += 1
-        Category.product_count += len(products)
+        self.__products: List[Product] = []
 
-    # ---------------- ADD PRODUCT ----------------
+        Category.category_count += 1
+
+        # добавляем стартовые товары через add_product,
+        # чтобы сработали все проверки и счётчики
+        for product in products:
+            self.add_product(product)
+
     def add_product(self, product: Product) -> None:
+        """
+        Добавляет продукт в категорию.
+
+        Разрешены только объекты Product и его наследников.
+        В остальных случаях выбрасывается TypeError.
+        """
+        if not isinstance(product, Product):
+            raise TypeError(
+                "Можно добавлять только объекты "
+                "Product или его наследников"
+            )
+
         self.__products.append(product)
         Category.product_count += 1
 
-    # ---------------- PRODUCTS GETTER ----------------
     @property
     def products(self) -> str:
-        return "".join(str(p) + "\n" for p in self.__products)
+        """
+        Возвращает строку со всеми продуктами вида:
+        'Название продукта, X руб. Остаток: Y шт.\n'
+        """
+        return "".join(str(product) + "\n" for product in self.__products)
 
-    # ---------------- STR ----------------
     def __str__(self) -> str:
-        total = sum(p.quantity for p in self.__products)
-        return f"{self.name}, количество продуктов: {total} шт."
+        """Возвращает строку вида:
+        'Название категории, количество продуктов: X шт.'
+        """
+        total_quantity = sum(product.quantity for product in self.__products)
+        prefix = f"{self.name}, количество продуктов: "
+        return f"{prefix}{total_quantity} шт."
