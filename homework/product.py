@@ -4,17 +4,27 @@ from __future__ import annotations
 class Product:
     """Класс товара."""
 
-    __price: float  # приватный атрибут класса — для выполнения требований SkyPro
+    __price: float
+    # приватный атрибут класса — для выполнения требований SkyPro
 
-    def __init__(self, name: str, description: str, price: float, quantity: int) -> None:
+    def __init__(
+        self,
+        name: str,
+        description: str,
+        price: float,
+        quantity: int,
+    ) -> None:
         self.name = name
         self.description = description
         self.__price = price
         self.quantity = quantity
 
     # ---------------- STR ----------------
-    def __str__(self) -> str:
-        return f"{self.name}, {self.__price} руб. Остаток: {self.quantity} шт."
+    def __str__(self):
+        return (
+            f"{self.name}, {self.price} руб. "
+            f"Остаток: {self.quantity} шт."
+        )
 
     # ---------------- PRICE GETTER/SETTER ----------------
     @property
