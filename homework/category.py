@@ -2,20 +2,14 @@ from __future__ import annotations
 
 from typing import List
 
-from .product import Product
+from homework.product import Product
 
 
 class Category:
-    """
-    Класс категории товаров.
+    """Класс категории товаров."""
 
-    :param name: название категории
-    :param description: описание категории
-    :param products: список товаров (объекты Product)
-    """
-
-    category_count: int = 0
-    product_count: int = 0
+    category_count = 0
+    product_count = 0
 
     def __init__(
         self,
@@ -27,35 +21,41 @@ class Category:
         self.description = description
         self.__products: List[Product] = []
 
-        # учёт категории
         Category.category_count += 1
 
         # добавляем стартовые товары через add_product,
-        # чтобы корректно обновился product_count
+        # чтобы сработали все проверки и счётчики
         for product in products:
             self.add_product(product)
 
     def add_product(self, product: Product) -> None:
         """
-        Добавляет продукт в приватный список товаров категории.
+        Добавляет продукт в категорию.
+
+        Разрешены только объекты Product и его наследников.
+        В остальных случаях выбрасывается TypeError.
         """
+        if not isinstance(product, Product):
+            raise TypeError(
+                "Можно добавлять только объекты "
+                "Product или его наследников"
+            )
+
         self.__products.append(product)
         Category.product_count += 1
 
     @property
     def products(self) -> str:
         """
-        Возвращает список товаров в виде строк:
-
-        "Название продукта, X руб. Остаток: Y шт.\n"
+        Возвращает строку со всеми продуктами вида:
+        'Название продукта, X руб. Остаток: Y шт.\n'
         """
-        lines: list[str] = []
+        return "".join(str(product) + "\n" for product in self.__products)
 
-        for product in self.__products:
-            line = (
-                f"{product.name}, {product.price} руб. "
-                f"Остаток: {product.quantity} шт.\n"
-            )
-            lines.append(line)
-
-        return "".join(lines)
+    def __str__(self) -> str:
+        """Возвращает строку вида:
+        'Название категории, количество продуктов: X шт.'
+        """
+        total_quantity = sum(product.quantity for product in self.__products)
+        prefix = f"{self.name}, количество продуктов: "
+        return f"{prefix}{total_quantity} шт."

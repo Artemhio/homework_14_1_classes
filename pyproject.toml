@@ -5,9 +5,10 @@ description = ""
 authors = ["Artem <artemiy9999@gmail.com>"]
 readme = "README.md"
 
-packages = [
-    { include = "homework" }
-]
+packages = [{ include = "homework" }]
+
+[tool.coverage.run]
+omit = ["homework/main.py"]
 
 [tool.poetry.dependencies]
 python = "^3.12"
