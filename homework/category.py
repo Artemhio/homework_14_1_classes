@@ -59,3 +59,17 @@ class Category:
         total_quantity = sum(product.quantity for product in self.__products)
         prefix = f"{self.name}, количество продуктов: "
         return f"{prefix}{total_quantity} шт."
+
+    def middle_price(self) -> float:
+        """
+        Возвращает среднюю цену товаров в категории.
+
+        Складывает price всех товаров и делит на их количество.
+        Если товаров нет, возвращает 0.
+        """
+        try:
+            total_price = sum(product.price for product in self.__products)
+            count = len(self.__products)
+            return total_price / count
+        except ZeroDivisionError:
+            return 0.0

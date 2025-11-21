@@ -75,6 +75,11 @@ class Product(CreationLoggerMixin, BaseProduct):
         price: float,
         quantity: int,
     ) -> None:
+        if quantity == 0:
+            raise ValueError(
+                "Товар с нулевым количеством не может быть добавлен"
+            )
+
         self.__price = price
         super().__init__(name, description, price, quantity)
 
