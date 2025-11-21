@@ -1,3 +1,4 @@
+import pytest
 from homework.product import Product
 from homework.category import Category
 
@@ -50,3 +51,11 @@ def test_add_product_and_products_property() -> None:
     )
 
     assert category.products == expected
+
+
+def test_product_zero_quantity_raises_value_error() -> None:
+    with pytest.raises(
+        ValueError,
+        match="Товар с нулевым количеством не может быть добавлен",
+    ):
+        Product("Бракованный товар", "desc", 1000.0, 0)
